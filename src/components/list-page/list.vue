@@ -56,9 +56,10 @@ export default {
     },
     methods:{
         toDetailPage: function() {
-            console.log(this.item.id)
+            var id = this.item.id;
+            //console.log(this.url)
             localStorage.setItem("ListItemStor",JSON.stringify(this.item));
-            this.$router.push({path:this.url+this.item.id});
+            this.$router.push({path:this.url+id});
         }
     }
 }

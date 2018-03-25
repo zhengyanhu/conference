@@ -20,7 +20,7 @@
 import list from '../list-page/list'
 export default {
     created() {
-        console.log(this.$router.params)
+        console.log(this.$route.params.id)
         this.items.push(JSON.parse(localStorage.getItem("ListItemStor")));
     },
     data() {
@@ -36,7 +36,8 @@ export default {
             window.history.back();
         },
         deleteItem: function() {
-            this.$http.get('http://192.168.5.13:8080/adhoc/del/'+this.$router.params).then(function(json){
+            console.log(this.$route.params.id)
+            this.$http.get('http://192.168.5.13:8080/adhoc/del/'+this.$route.params.id).then(function(json){
                 console.log(json)
                 if(json.data.code == "0"){
                     this.$router.push({path:'/infoDetail'});
