@@ -1,6 +1,6 @@
 <template lang="html">
   <div id="app" class="flex column">
-  <m-header></m-header>
+  <m-header :classObj1="classObj1" :classObj="classObj" :title="title"></m-header>
   <main class="f-g1" id="main">
       <section class="conference">
           <div class="option-conference flex">
@@ -80,6 +80,7 @@
 <script>
 import {datePicker} from '../../common/js/datePicker'
 import MHeader from '../m-header/header'
+console.log(MHeader);
 export default {
     created() {
         if(new Date().getHours() >= 12) {
@@ -138,6 +139,9 @@ export default {
     },
     data() {
         return {
+            title:"会议预定",
+            classObj:{},
+            classObj1:{},
             name:"",
             confCategory:"1",
             date:new Date().getFullYear()+'-'+(new Date().getMonth()+1<10?'0'+(new Date().getMonth()+1):new Date().getMonth()+1)+'-'+new Date().getDate(),

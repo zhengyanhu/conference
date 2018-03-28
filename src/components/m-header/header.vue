@@ -1,34 +1,46 @@
 <template lang="html">
     <header class="header">
         <div class="head">
-            <div @click="back()" v-if="headStyle.btnLimg" :style="[headStyle.btnLimg]" class="btn-leftA"></div>
-            <div v-else class="btn-left"></div>
-            <h1 class="title">{{ headStyle.title }}</h1>
-            <div @click="btnRight()" v-if="headStyle.btnRimg" :style="[headStyle.btnRimg]" class="btn-rightA"></div>
-            <div v-else class="btn-right"></div>
+            <div class="btn-nav" v-if="classObj.fa" @click="back">
+                <span class="icon" :class="classObj"></span>
+            </div>
+            <div class="btn-nav" v-else></div>
+            <h1 class="title">{{ title }}</h1>
+            <div class="btn-nav" v-if="classObj1.fa" @click="push">
+                <span class="icon" :class="classObj1"></span>
+            </div>
+            <div class="btn-nav" v-else></div>
+
         </div>
     </header>
 </template>
 
 <script>
 export default {
-  data() {
-      return {
-         headStyle:{
-             title: '会议预定',
-              btnLimg: {
-                  backgroundImage: 'url(./images/back.png)'
-              },
-              btnRimg: {
-
-              }
-         }
-      }
-  },
-  methods:{
-      back:function(){
-
-      }
+    created() {
+        console.log(this.classObj.fa)
+    },
+    methods:{
+        back: function() {
+            this.$emit("navBtn","left");
+        },
+        push: function() {
+            this.$emit("navBtn","right");
+        }
+    },
+    props: {
+        title: {
+            type: String,
+            default: '',
+    },
+    classObj:{
+        type: Object,
+        default:{}
+    },
+    classObj1:{
+        type: Object,
+        default:{}
+    }
   }
 }
 </script>
@@ -50,29 +62,13 @@ export default {
     overflow: hidden;
     padding: .72em 1em .72em;
 }
-.btn-leftA{
+.btn-nav{
     min-width:4em;
     min-height:2em;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 40%;
+    padding-top:.8rem;
 }
-.btn-left{
-    min-width:4em;
-    min-height:2em;
-    backgroundImage: 'url(./images/back.png)'
+.icon{
+    font-size:1.6rem;
 }
-.btn-right{
-    min-width:4em;
-    min-height:2em;
 
-}
-.btn-rightA{
-    min-width:4em;
-    min-height:2em;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 40%;
-
-}
 </style>
