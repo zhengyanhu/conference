@@ -100,12 +100,6 @@ export default {
             this.endTime = "11:00";
         }
     },
-    mounted() {
-        let obj = new datePicker();
-        let obj1 = new datePicker();
-        let obj2 = new datePicker();
-        let that = this;
-    },
     data() {
         return {
             title:"会议预定",
@@ -126,8 +120,9 @@ export default {
             let json = {};
             let startTime = this.date + " " + this.startTime;
             let endTime = this.date + " " + this.endTime;
-            json.startTime = new Date(startTime).getTime();
-            json.endTime = new Date(endTime).getTime();
+            console.log(endTime)
+            json.startTime = new Date(startTime.replace("-","/")).getTime();
+            json.endTime = new Date(endTime.replace("-","/")).getTime();
             json.confCategory = this.confCategory;
             json.duration = (new Date(json.endTime).getTime() - new Date(json.startTime).getTime()) / 1000 / 60;
             json.confMediaType = "VIP";
