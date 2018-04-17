@@ -107,50 +107,6 @@ export default {
         this.name = item.name;
         this.confCategory = item.confCategory;
     },
-    mounted() {
-        let obj = new datePicker();
-        let obj1 = new datePicker();
-        let obj2 = new datePicker();
-        let that = this;
-        obj.init({
-           'trigger': '#date', /*选择器，触发弹出插件*/
-           'type': 'date',/*date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择*/
-           'minuteStep': 30,
-           'minDate':new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate(),/*最小日期*/
-           'maxDate':'2100-12-31',/*最大日期*/
-           'onSubmit':function(){/*确认时触发事件*/
-               that.date =obj.value;
-           },
-           'onClose':function(){/*取消时触发事件*/
-           }
-       });
-       obj1.init({
-          'trigger': '#startTime', /*选择器，触发弹出插件*/
-          'type': 'time',/*date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择*/
-          'minuteStep': 30,
-          'minDate':new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate(),/*最小日期*/
-          'maxDate':'2100-12-31',/*最大日期*/
-          'onSubmit':function(){/*确认时触发事件*/
-              that.startTime = obj1.value;
-              that.defaultTime =  that.startTime.split(":")[0] + ":" + (parseInt(that.startTime.split(":")[1])+1)
-              obj2.setTime(that.defaultTime)
-          },
-          'onClose':function(){/*取消时触发事件*/
-          }
-      });
-      obj2.init({
-         'trigger': '#endTime', /*选择器，触发弹出插件*/
-         'type': 'time',/*date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择*/
-         'minuteStep': 30,
-         'defaultTime':that.defaultTime,
-         'onSubmit':function(){/*确认时触发事件*/
-             that.endTime = obj2.value;
-         },
-         'onClose':function(){/*取消时触发事件*/
-         }
-     });
-
-    },
     data() {
         return {
             title:"会议预定",
