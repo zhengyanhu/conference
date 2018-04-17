@@ -85,9 +85,8 @@
 </template>
 
 <script>
-import {datePicker} from '../../common/js/datePicker'
+//import {datePicker} from '../../common/js/datePicker'
 import MHeader from '../m-header/header'
-console.log(MHeader);
 export default {
     created() {
         if(new Date().getHours() >= 12) {
