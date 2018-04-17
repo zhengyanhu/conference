@@ -1,6 +1,6 @@
 <template lang="html">
   <div id="app" class="flex column">
-  <m-header :classObj1="classObj1" :classObj="classObj" :title="title"></m-header>
+  <m-header :classObj1="classObj1" :classObj="classObj" :title="title" v-on:navBtn="navBtn"></m-header>
   <main class="f-g1" id="main">
       <section class="conference">
           <div class="option-conference flex">
@@ -12,9 +12,9 @@
           <p style="margin-top:.3rem" class="name">会议类型</p>
           <div class="option-conference">
               <div class="flex conference-type ">
-                  <p value="1" class="ct-item f-g1 selectOnImg" @click="selectOption($event)">小型会议</p>
-                  <p value="2" class="ct-item f-g1" @click="selectOption($event)">宣导型会议</p>
-                  <p value="3" class="ct-item f-g1" @click="selectOption($event)">重要会议</p>
+                  <p :class="{'selectOnImg':confCategory === 1}" value="1" class="ct-item f-g1" @click="selectOption($event)">小型会议</p>
+                  <p :class="{'selectOnImg':confCategory === 2}" value="2" class="ct-item f-g1" @click="selectOption($event)">宣导型会议</p>
+                  <p :class="{'selectOnImg':confCategory === 3}" value="3" class="ct-item f-g1" @click="selectOption($event)">重要会议</p>
               </div>
           </div>
       </section>
@@ -39,9 +39,7 @@
       <section class="conference">
           <div class="option-conference flex">
               <p class="name">会议日期：</p>
-              <p class="f-g1">
-                  <DatePicker :value="date" @on-change="dateChange" type="date" placeholder="Select date" style="width: 100%"></DatePicker>
-               </p>
+              <p class="f-g1" id="date"> {{ date }} </p>
               <span class="fa fa-chevron-right chevron"></span>
           </div>
       </section>
@@ -60,68 +58,122 @@
                   <div class="column">
                       <div class="flex startTime">
                           <p class="name">开始时间</p>
-                          <div class="f-g1 time">
-                              <time-picker :value="startTime" @on-change="startTimeChange" format="HH:mm" :steps="[1, 15]" confirm placeholder="" style="width: 100%"></time-picker>
-                          </div>
+                          <p id="startTime" class="f-g1 time">{{ startTime }}</p>
                           <span class="fa fa-chevron-right chevron"></span>
                       </div>
                       <div class="flex endTime">
                           <p class="name">结束时间</p>
-                          <div class="f-g1 time">
-                              <time-picker :value="endTime" @on-change="endTimeChange" format="HH:mm" :steps="[1, 15]" confirm placeholder="" style="width: 100%"></time-picker>
-                          </div>
+                          <p id="endTime" class="f-g1 time">{{ endTime }}</p>
                           <span class="fa fa-chevron-right chevron"></span>
                       </div>
                   </div>
               </div>
           </div>
-
       </section>
   </main>
-  <div>
-      <div @click="request()" id="reservationBtn">立即预定</div>
+  <div id="btns" class="flex">
+      <div @click="update()" class="btn f-g1">修改</div>
+      <div @click="del()" style="background-color:#4997E8" class="btn f-g1">删除</div>
   </div>
   </div>
 </template>
 
 <script>
-//import {datePicker} from '../../common/js/datePicker'
+import {datePicker} from '../../common/js/datePicker'
 import MHeader from '../m-header/header'
+console.log(MHeader);
 export default {
     created() {
-        if(new Date().getHours() >= 12) {
-            this.pm = true;
-            this.startTime = "14:00";
-            this.endTime = "17:30";
-        }else{
-            this.am = true;
-            this.startTime = "09:30";
-            this.endTime = "11:00";
-        }
+        // if(new Date().getHours() >= 12) {
+        //     this.pm = true;
+        //     this.startTime = "14:00";
+        //     this.endTime = "17:30";
+        // }else{
+        //     this.am = true;
+        //     this.startTime = "09:30";
+        //     this.endTime = "11:00";
+        // }
+        let item = JSON.parse(localStorage.getItem("ListItemStor"));
+        this.item = item;
+        this.date = item.startTime;
+        this.startTime = item.endTime.split("-")[0];
+        this.endTime = item.endTime.split("-")[1];
+        this.name = item.name;
+        this.confCategory = item.confCategory;
+    },
+    mounted() {
+        let obj = new datePicker();
+        let obj1 = new datePicker();
+        let obj2 = new datePicker();
+        let that = this;
+        obj.init({
+           'trigger': '#date', /*选择器，触发弹出插件*/
+           'type': 'date',/*date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择*/
+           'minuteStep': 30,
+           'minDate':new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate(),/*最小日期*/
+           'maxDate':'2100-12-31',/*最大日期*/
+           'onSubmit':function(){/*确认时触发事件*/
+               that.date =obj.value;
+           },
+           'onClose':function(){/*取消时触发事件*/
+           }
+       });
+       obj1.init({
+          'trigger': '#startTime', /*选择器，触发弹出插件*/
+          'type': 'time',/*date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择*/
+          'minuteStep': 30,
+          'minDate':new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate(),/*最小日期*/
+          'maxDate':'2100-12-31',/*最大日期*/
+          'onSubmit':function(){/*确认时触发事件*/
+              that.startTime = obj1.value;
+              that.defaultTime =  that.startTime.split(":")[0] + ":" + (parseInt(that.startTime.split(":")[1])+1)
+              obj2.setTime(that.defaultTime)
+          },
+          'onClose':function(){/*取消时触发事件*/
+          }
+      });
+      obj2.init({
+         'trigger': '#endTime', /*选择器，触发弹出插件*/
+         'type': 'time',/*date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择*/
+         'minuteStep': 30,
+         'defaultTime':that.defaultTime,
+         'onSubmit':function(){/*确认时触发事件*/
+             that.endTime = obj2.value;
+         },
+         'onClose':function(){/*取消时触发事件*/
+         }
+     });
+
     },
     data() {
         return {
             title:"会议预定",
-            classObj:{},
+            classObj:{
+                'fa':true,
+                'fa-chevron-left':true,
+                'fa-2x':true
+            },
             classObj1:{},
-            name:"test",
+            name:"",
             confCategory:"1",
             date:new Date().getFullYear()+'-'+(new Date().getMonth()+1<10?'0'+(new Date().getMonth()+1):new Date().getMonth()+1)+'-'+new Date().getDate(),
             startTime:'09:30',
             endTime:'11:30',
             defaultTime:new Date().getHours() + ":" + new Date().getMinutes(),
             am: false,
-            pm:false
+            pm:false,
+            confCategory:"",
+            item:{}
+
         }
     },
     methods:{
-        request: function() {
-            let json = {};
+        update: function() {
+            let json = this.item;
             let startTime = this.date + " " + this.startTime;
             let endTime = this.date + " " + this.endTime;
-            console.log(endTime)
-            json.startTime = new Date(startTime.replace("-","/")).getTime();
-            json.endTime = new Date(endTime.replace("-","/")).getTime();
+            json.startTime = new Date(startTime).getTime();
+            json.endTime = new Date(endTime).getTime();
             json.confCategory = this.confCategory;
             json.duration = (new Date(json.endTime).getTime() - new Date(json.startTime).getTime()) / 1000 / 60;
             json.confMediaType = "VIP";
@@ -130,20 +182,32 @@ export default {
                 alert("开始时间不可以大于结束时间");
                 return;
             }
-            //var params = JSON.stringify(json);
             var params = json;
             console.log(params)
             var me = this;
             this.$http({
                 method:'post',
                 contentType: 'application/json',
-                url:'http://192.168.5.56:8090/adhoc/addAdhoc',
+                url:'adhoc/updateAdhoc',
                 data:params
             }).then(function(result){
-                me.$router.push({path:'/infoDetail'});
+                me.$router.push({path:'/list'});
             }).catch(function (error) {
+                alert("修改失败")
                 console.log(error);
             })
+        },
+        del:function() {
+            var me = this;
+             this.$http.get('adhoc/del/'+this.$route.params.id).then(function(json){
+                 console.log(json)
+                 if(json.data.code == "0"){
+                     me.$router.push({path:'/list'});
+                 }else{
+                     alert(json.data.message);
+                 }
+
+             })
         },
         selectOption: function(ev){
             let el = ev.target.parentNode.children;
@@ -168,14 +232,12 @@ export default {
             }
             ev.target.className = "ms f-g1 selectOnImg"
         },
-        startTimeChange: function(stime) {
-            this.startTime = stime;
-        },
-        endTimeChange: function(etime) {
-            this.endTime = etime
-        },
-        dateChange:function(date) {
-            this.date = date;
+        navBtn: function(type) {
+            if(type === "left") {
+                this.$router.push({path:'/list'});
+            } else {
+                console.log('233')
+            }
         }
     },
     components:{
@@ -189,7 +251,7 @@ export default {
 #app
     width:100%;
     height:100%;
-#reservationBtn
+.btn
     height:2.5rem
     background:#0076ff;
     margin:0 auto;
@@ -240,11 +302,13 @@ export default {
             .time
                 text-align:right;
                 color:#0076ff;
+                padding-right:.8rem;
         .startTime
             margin-top:1rem;
             padding-left: .8rem;
             height:2rem;
             line-height:2rem;
+            border-bottom:$border-weight solid $color-border;
         .endTime
             margin-top:.5rem;
             margin-bottom:.5rem;
