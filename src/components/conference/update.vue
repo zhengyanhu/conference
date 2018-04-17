@@ -39,7 +39,9 @@
       <section class="conference">
           <div class="option-conference flex">
               <p class="name">会议日期：</p>
-              <p class="f-g1" id="date"> {{ date }} </p>
+              <p class="f-g1">
+                  <DatePicker :value="date" @on-change="dateChange" type="date" placeholder="Select date" style="width: 100%"></DatePicker>
+               </p>
               <span class="fa fa-chevron-right chevron"></span>
           </div>
       </section>
@@ -58,12 +60,16 @@
                   <div class="column">
                       <div class="flex startTime">
                           <p class="name">开始时间</p>
-                          <p id="startTime" class="f-g1 time">{{ startTime }}</p>
+                          <div class="f-g1 time">
+                              <time-picker :value="startTime" @on-change="startTimeChange" format="HH:mm" :steps="[1, 15]" confirm placeholder="" style="width: 100%"></time-picker>
+                          </div>
                           <span class="fa fa-chevron-right chevron"></span>
                       </div>
                       <div class="flex endTime">
                           <p class="name">结束时间</p>
-                          <p id="endTime" class="f-g1 time">{{ endTime }}</p>
+                          <div class="f-g1 time">
+                              <time-picker :value="endTime" @on-change="endTimeChange" format="HH:mm" :steps="[1, 15]" confirm placeholder="" style="width: 100%"></time-picker>
+                          </div>
                           <span class="fa fa-chevron-right chevron"></span>
                       </div>
                   </div>
@@ -79,7 +85,7 @@
 </template>
 
 <script>
-import {datePicker} from '../../common/js/datePicker'
+//import {datePicker} from '../../common/js/datePicker'
 import MHeader from '../m-header/header'
 console.log(MHeader);
 export default {
@@ -238,6 +244,15 @@ export default {
             } else {
                 console.log('233')
             }
+        },
+        startTimeChange: function(stime) {
+            this.startTime = stime;
+        },
+        endTimeChange: function(etime) {
+            this.endTime = etime
+        },
+        dateChange:function(date) {
+            this.date = date;
         }
     },
     components:{
