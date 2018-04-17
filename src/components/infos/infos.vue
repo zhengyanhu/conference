@@ -2,7 +2,11 @@
   <div class="Page flex column">
       <m-header :classObj1="classObj1" :classObj="classObj" :title="title" v-on:navBtn="navBtn"></m-header>
       <main class="f-g1 bc-color">
-          <ul id="list"  v-for="item in items">
+
+          <div v-if="notData" style="text-align:center">
+              暂无数据...
+          </div>
+          <ul v-else id="list"  v-for="item in items">
               <list :url="url" :item="item"></list>
           </ul>
       </main>
@@ -26,7 +30,8 @@ export default {
             },
             classObj1:{},
             items:[],
-            url:'/detail/'
+            url:'/update/',
+            notData:false
         }
     },
     methods: {
@@ -35,9 +40,15 @@ export default {
         },
         _getList: function() {
             let that = this;
-            this.$http.get('http://192.168.5.13:8080/adhoc/list').then(function(result){
-                console.log(result.data.result.list)
+            this.$http.get('http://192.168.5.56:8090/adhoc/list').then(function(result){
+                //console.log(result.data.result.list)
                 that.items = result.data.result.list;
+                if( result.data.result.list.length === 0) {
+                    that.notData = true;
+                } else {
+                    that.notData = false;
+                }
+
             }).catch(function(error){
 
             });
@@ -45,9 +56,8 @@ export default {
         navBtn: function(type) {
             if(type === "left") {
                 this.$router.push({path:'/home'});
-                console.log('2')
             } else {
-                console.log('233')
+                console.log('right')
             }
         }
     },

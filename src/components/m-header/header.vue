@@ -18,7 +18,6 @@
 <script>
 export default {
     created() {
-        console.log(this.classObj.fa)
     },
     methods:{
         back: function() {
