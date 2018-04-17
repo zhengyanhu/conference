@@ -40,7 +40,7 @@ export default {
         },
         _getList: function() {
             let that = this;
-            this.$http.get('http://192.168.5.56:8090/adhoc/list').then(function(result){
+            this.$http.get('adhoc/list').then(function(result){
                 //console.log(result.data.result.list)
                 that.items = result.data.result.list;
                 if( result.data.result.list.length === 0) {

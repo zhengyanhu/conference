@@ -3,20 +3,20 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-import conference from '../components/conference/conference'
-import Infos from '../components/infos/infos'
+import add from '../components/conference/add'
+import list from '../components/conference/list'
 import Detail from '../components/detail/detail'
-import update from '../components/update/update'
+import update from '../components/conference/update'
 export default new Router({
   routes: [{
     path: '/',
-    redirect: '/infoDetail'
+    redirect: '/list'
   }, {
-    path: '/home',
-    component: conference
+    path: '/add',
+    component: add
   }, {　　　　
-    path: '/infoDetail',
-    component: Infos　　
+    path: '/list',
+    component: list
   }, {
     path: '/detail/:id',
     component: Detail
