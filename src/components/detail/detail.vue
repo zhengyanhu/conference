@@ -38,10 +38,12 @@ export default {
         deleteItem: function() {
            //console.log(this.$route.params.id)
            var me = this;
-            this.$http.get('http://192.168.5.56:8090/adhoc/del/'+this.$route.params.id).then(function(json){
+            this.$http.get('adhoc/del/'+this.$route.params.id).then(function(json){
                 console.log(json)
                 if(json.data.code == "0"){
                     me.$router.push({path:'/infoDetail'});
+                }else if(json.data.code == 503) {
+                    window.location.href="login.html";
                 }else{
                     alert(json.data.message);
                 }

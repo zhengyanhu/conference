@@ -140,7 +140,12 @@ export default {
                 url:'adhoc/addAdhoc',
                 data:params
             }).then(function(result){
-                me.$router.push({path:'/list'});
+                console.log(result);
+                if(result.data.code == "0"){
+                    me.$router.push({path:'/list'});
+                }else if(result.data.code == 503){
+                    window.location.href="login.html";
+                }
             }).catch(function (error) {
                 console.log(error);
             })

@@ -15,7 +15,7 @@
                 <span class="font-color1 tit">预定人</span>
             </div>
             <div class="">
-                <span>暂无</span>
+                <span>{{ item.createBy }}</span>
             </div>
 
         </div>
@@ -32,7 +32,7 @@
         <div class="line flex">
             <div class="tit">
                 <span class="fa fa-phone fa-lg font-color"></span>
-                <span class="font-color1 tit">会议室</span>
+                <span class="font-color1 tit">会议号</span>
             </div>
             <div class="">
                 <span>{{ item.accessCode }}</span>

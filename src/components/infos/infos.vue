@@ -40,15 +40,18 @@ export default {
         },
         _getList: function() {
             let that = this;
-            this.$http.get('http://192.168.5.56:8090/adhoc/list').then(function(result){
-                //console.log(result.data.result.list)
-                that.items = result.data.result.list;
-                if( result.data.result.list.length === 0) {
-                    that.notData = true;
-                } else {
-                    that.notData = false;
+            this.$http.get('adhoc/list').then(function(result){
+                if(result.data.code == 500) {
+                    window.location.href="login.html";        
+                }else {
+                    //console.log(result.data.result.list)
+                    that.items = result.data.result.list;
+                    if( result.data.result.list.length === 0) {
+                        that.notData = true;
+                    } else {
+                        that.notData = false;
+                    }
                 }
-
             }).catch(function(error){
 
             });

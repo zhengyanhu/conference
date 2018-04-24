@@ -134,8 +134,8 @@ export default {
             let json = this.item;
             let startTime = this.date + " " + this.startTime;
             let endTime = this.date + " " + this.endTime;
-            json.startTime = new Date(startTime).getTime();
-            json.endTime = new Date(endTime).getTime();
+            json.startTime = new Date(startTime.replace("-","/")).getTime();
+            json.endTime = new Date(endTime.replace("-","/")).getTime();
             json.confCategory = this.confCategory;
             json.duration = (new Date(json.endTime).getTime() - new Date(json.startTime).getTime()) / 1000 / 60;
             json.confMediaType = "VIP";
@@ -153,7 +153,13 @@ export default {
                 url:'adhoc/updateAdhoc',
                 data:params
             }).then(function(result){
-                me.$router.push({path:'/list'});
+                console.log(result);
+
+                if(result.data.code == "0"){
+                    me.$router.push({path:'/list'});
+                }else if(result.data.code == 503){
+                    window.location.href="login.html";
+                }               
             }).catch(function (error) {
                 alert("修改失败")
                 console.log(error);
@@ -164,9 +170,11 @@ export default {
              this.$http.get('adhoc/del/'+this.$route.params.id).then(function(json){
                  console.log(json)
                  if(json.data.code == "0"){
-                     me.$router.push({path:'/list'});
+                    me.$router.push({path:'/list'});
+                 }else if(json.data.code == 503){
+                    window.location.href="login.html";
                  }else{
-                     alert(json.data.message);
+                    alert(json.data.message);
                  }
 
              })

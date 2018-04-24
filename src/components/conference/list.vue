@@ -41,12 +41,16 @@ export default {
         _getList: function() {
             let that = this;
             this.$http.get('adhoc/list').then(function(result){
-                //console.log(result.data.result.list)
-                that.items = result.data.result.list;
-                if( result.data.result.list.length === 0) {
+                console.log(result.data.code)
+                if(result.data.code == 503) {
+                    window.location.href="login.html";        
+                }else if( result.data.result.list.length === 0) {
+
                     that.notData = true;
                 } else {
                     that.notData = false;
+                    that.items = result.data.result.list;
+
                 }
 
             }).catch(function(error){
